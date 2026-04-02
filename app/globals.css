@@ -1,26 +1,170 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* Brand: #02abe6 */
 @theme inline {
+  --font-sans: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-syne), var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-ring: var(--ring);
+  --color-accent: var(--accent);
+  --color-brand: var(--brand);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-light: var(--brand-light);
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --brand: #02abe6;
+  --brand-deep: #0188bc;
+  --brand-light: #4dc8f5;
+  /* Light mode: confident but restrained brand presence on elevated UI */
+  --brand-glow: rgb(2 171 230 / 0.14);
+  /* Cool foundation with clear cyan DNA — institutional, not toy-bright */
+  --background: #e5f2f9;
+  --foreground: #102833;
+  --card: #f5fbfd;
+  --card-foreground: #102833;
+  --muted: #d2eaf4;
+  --muted-foreground: #4a6678;
+  --border: #9dc4dc;
+  --primary: #02abe6;
+  --primary-foreground: #ffffff;
+  --ring: #02abe6;
+  --accent: #c5e8f5;
+}
+
+.dark {
+  --brand: #02abe6;
+  --brand-deep: #016a9e;
+  --brand-light: #5fd4ff;
+  --brand-glow: rgb(2 171 230 / 0.18);
+  --background: #020c14;
+  --foreground: #f0fafd;
+  --card: #0a1824;
+  --card-foreground: #f0fafd;
+  --muted: #0f2838;
+  --muted-foreground: #8ecae6;
+  --border: #164056;
+  --primary: #02abe6;
+  --primary-foreground: #ffffff;
+  --ring: #4dc8f5;
+  --accent: #063044;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+  position: relative;
+}
+
+/* Light: soft brand atmosphere (dark mode uses flat --background only) */
+html:not(.dark) body {
+  background-image:
+    radial-gradient(ellipse 115% 65% at 50% -22%, color-mix(in oklab, var(--primary) 13%, transparent) 0%, transparent 50%),
+    radial-gradient(ellipse 65% 50% at 100% 0%, color-mix(in oklab, var(--brand-light) 11%, transparent) 0%, transparent 46%),
+    radial-gradient(ellipse 50% 42% at 0% 100%, color-mix(in oklab, var(--primary) 7%, transparent) 0%, transparent 40%);
+}
+
+.dark body {
+  background-image: none;
+}
+
+/* Subtle film grain + depth */
+body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.dark body::before {
+  opacity: 0.07;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Headline gradient — all words use same hue family as #02abe6 */
+.text-brand-gradient {
+  background-image: linear-gradient(
+    to bottom right,
+    var(--brand-deep),
+    var(--brand),
+    var(--brand-light)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.dark .text-brand-gradient {
+  background-image: linear-gradient(to bottom right, #9ee8ff, #5fd4ff, #02abe6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.section-skew {
+  clip-path: polygon(0 0, 100% 0, 100% 96%, 0 100%);
+}
+
+.glow-orb {
+  filter: blur(64px);
+  opacity: 0.32;
+}
+
+.dark .glow-orb {
+  opacity: 0.35;
+}
+
+.bg-grid-faint {
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--border) 45%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--border) 45%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+html:not(.dark) .bg-grid-faint {
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--primary) 11%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--primary) 11%, transparent) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* Brand-tinted shadows (replaces generic sky shadows) */
+.shadow-brand {
+  box-shadow: 0 10px 40px -12px var(--brand-glow);
+}
+
+.shadow-brand-md {
+  box-shadow: 0 8px 28px -8px var(--brand-glow);
+}
+
+.shadow-brand-header {
+  box-shadow: 0 4px 24px -6px var(--brand-glow);
+}
+
+::selection {
+  background: color-mix(in oklab, var(--primary) 38%, transparent);
+  color: var(--foreground);
 }
