@@ -9,74 +9,114 @@ function apiBase(): string {
 }
 
 export async function fetchPublicModules(): Promise<PublicModule[]> {
-  const res = await fetch(`${apiBase()}/public/modules`, {
-    next: { revalidate: 120 },
-    headers: { Accept: "application/json" },
-  });
-  if (!res.ok) {
-    console.warn("Public modules API failed", res.status);
+  try {
+    const res = await fetch(`${apiBase()}/public/modules`, {
+      next: { revalidate: 120 },
+      headers: { Accept: "application/json" },
+    });
+    if (!res.ok) {
+      console.warn("Public modules API failed", res.status);
+      return [];
+    }
+    const data = await res.json();
+    return (data.modules ?? []) as PublicModule[];
+  } catch (e) {
+    console.warn(
+      "Public modules API unreachable (is the backend running?)",
+      e instanceof Error ? e.message : e
+    );
     return [];
   }
-  const data = await res.json();
-  return (data.modules ?? []) as PublicModule[];
 }
 
 export async function fetchPublicStaff(): Promise<PublicStaff[]> {
-  const res = await fetch(`${apiBase()}/public/staff`, {
-    next: { revalidate: 120 },
-    headers: { Accept: "application/json" },
-  });
-  if (!res.ok) {
-    console.warn("Public staff API failed", res.status);
+  try {
+    const res = await fetch(`${apiBase()}/public/staff`, {
+      next: { revalidate: 120 },
+      headers: { Accept: "application/json" },
+    });
+    if (!res.ok) {
+      console.warn("Public staff API failed", res.status);
+      return [];
+    }
+    const data = await res.json();
+    return (data.staff ?? []) as PublicStaff[];
+  } catch (e) {
+    console.warn(
+      "Public staff API unreachable (is the backend running?)",
+      e instanceof Error ? e.message : e
+    );
     return [];
   }
-  const data = await res.json();
-  return (data.staff ?? []) as PublicStaff[];
 }
 
 export async function fetchPublicStaffById(id: string): Promise<PublicStaff | null> {
-  const res = await fetch(`${apiBase()}/public/staff/${id}`, {
-    next: { revalidate: 120 },
-    headers: { Accept: "application/json" },
-  });
-  if (!res.ok) return null;
-  const data = await res.json();
-  return (data.staff ?? null) as PublicStaff | null;
+  try {
+    const res = await fetch(`${apiBase()}/public/staff/${id}`, {
+      next: { revalidate: 120 },
+      headers: { Accept: "application/json" },
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return (data.staff ?? null) as PublicStaff | null;
+  } catch {
+    return null;
+  }
 }
 
 export async function fetchPublicGalleryCategories(): Promise<PublicGalleryCategory[]> {
-  const res = await fetch(`${apiBase()}/public/gallery/categories`, {
-    next: { revalidate: 60 },
-    headers: { Accept: "application/json" },
-  });
-  if (!res.ok) {
-    console.warn("Public gallery categories API failed", res.status);
+  try {
+    const res = await fetch(`${apiBase()}/public/gallery/categories`, {
+      next: { revalidate: 60 },
+      headers: { Accept: "application/json" },
+    });
+    if (!res.ok) {
+      console.warn("Public gallery categories API failed", res.status);
+      return [];
+    }
+    const data = await res.json();
+    return (data.categories ?? []) as PublicGalleryCategory[];
+  } catch (e) {
+    console.warn(
+      "Public gallery categories API unreachable",
+      e instanceof Error ? e.message : e
+    );
     return [];
   }
-  const data = await res.json();
-  return (data.categories ?? []) as PublicGalleryCategory[];
 }
 
 export async function fetchPublicGalleryImages(categoryId: number): Promise<PublicGalleryImage[]> {
-  const res = await fetch(`${apiBase()}/public/gallery/categories/${categoryId}/images`, {
-    next: { revalidate: 60 },
-    headers: { Accept: "application/json" },
-  });
-  if (!res.ok) {
-    console.warn("Public gallery images API failed", res.status);
+  try {
+    const res = await fetch(`${apiBase()}/public/gallery/categories/${categoryId}/images`, {
+      next: { revalidate: 60 },
+      headers: { Accept: "application/json" },
+    });
+    if (!res.ok) {
+      console.warn("Public gallery images API failed", res.status);
+      return [];
+    }
+    const data = await res.json();
+    return (data.images ?? []) as PublicGalleryImage[];
+  } catch (e) {
+    console.warn(
+      "Public gallery images API unreachable",
+      e instanceof Error ? e.message : e
+    );
     return [];
   }
-  const data = await res.json();
-  return (data.images ?? []) as PublicGalleryImage[];
 }
 
 /** For client-side tab switches (no Next Data Cache). */
 export async function fetchPublicGalleryImagesLive(categoryId: number): Promise<PublicGalleryImage[]> {
-  const res = await fetch(`${apiBase()}/public/gallery/categories/${categoryId}/images`, {
-    cache: "no-store",
-    headers: { Accept: "application/json" },
-  });
-  if (!res.ok) return [];
-  const data = await res.json();
-  return (data.images ?? []) as PublicGalleryImage[];
+  try {
+    const res = await fetch(`${apiBase()}/public/gallery/categories/${categoryId}/images`, {
+      cache: "no-store",
+      headers: { Accept: "application/json" },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return (data.images ?? []) as PublicGalleryImage[];
+  } catch {
+    return [];
+  }
 }
