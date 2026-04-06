@@ -1,9 +1,14 @@
 import type { PublicGalleryCategory, PublicGalleryImage, PublicModule, PublicStaff } from "./types";
 
+const DEFAULT_PRODUCTION_API_BASE = "https://api.technatechnicalinstitute.com/api/v1";
+
 function apiBase(): string {
   const raw = process.env.NEXT_PUBLIC_API_URL?.trim();
   if (raw) {
     return raw.replace(/\/$/, "");
+  }
+  if (process.env.NODE_ENV === "production") {
+    return DEFAULT_PRODUCTION_API_BASE;
   }
   return "http://127.0.0.1:8000/api/v1";
 }
