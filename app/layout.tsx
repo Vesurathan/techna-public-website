@@ -26,6 +26,7 @@ export const metadata: Metadata = {
   description:
     "Techna Technical Institute, Jaffna — the best quality technical education for technology. Modern labs, expert teachers, E-TECH & B-TECH practicals, Veerasingam Hall.",
   keywords: ["Techna", "technical institute", "education", "Sri Lanka", "modules", "training"],
+  // Tab / PWA icons: `app/icon.png` (from smart-tech-01). Do not add `app/favicon.ico` or Next’s default wins.
 };
 
 export default async function RootLayout({
